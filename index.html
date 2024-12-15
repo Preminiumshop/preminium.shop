@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AROBOATICS</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="light-theme"> <!-- Varsayılan tema açık tema -->
+
+    <!-- Üstteki başlık çubuğu -->
+    <div class="header" id="header">
+        <img src="star-icon.png" alt="Yıldız" class="star-icon">
+        <h1>AROBOATICS</h1>
+
+        <!-- Tema değiştirme butonu -->
+        <div class="theme-switcher">
+            <button id="themeToggle">Koyu Tema</button>
+        </div>
+    </div>
+
+    <!-- İçerik alanı -->
+    <div class="content">
+        <h2>Robotik Teknolojilerinin Geleceği</h2>
+        <p>Robotik, endüstri ve yaşam biçimimiz üzerinde önemli etkiler yaratmaktadır...</p>
+        <!-- Diğer içerikler burada... -->
+    </div>
+
+    <!-- Fotoğraf alanı -->
+    <div class="photo-container">
+        <img src="robot-image.jpg" alt="Robotik Fotoğraf" class="full-screen-photo">
+    </div>
+
+    <!-- Kediler ve Köpekler Hakkında Yazı -->
+    <div class="extra-content">
+        <h3>Kediler ve Köpekler</h3>
+        <p>Kediler ve köpekler, insanlar için evcil hayvanların önde gelen türlerindendir...</p>
+    </div>
+
+    <!-- Kaynakça Bölümü -->
+    <div class="references">
+        <p class="references-title">Kaynakça:</p>
+        <p class="references-item">Serhat Güray, "Robotik ve Evcil Hayvanlar Üzerine Çalışmalar", 2024.</p>
+    </div>
+
+    <script>
+        // Kaydırma kontrolü değişkenleri
+        let lastScrollTop = 0;
+        const header = document.getElementById('header');
+        const showOnScrollUp = 10; // Minimum yukarı kaydırma hareketi (piksel)
+
+        window.addEventListener('scroll', function () {
+            let currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+
+            // Eğer aşağı doğru kaydırılıyorsa header gizlensin
+            if (currentScroll > lastScrollTop && currentScroll > 100) {
+                header.style.transform = "translateY(-100%)"; // Header gizleniyor
+            } 
+            // Yukarı doğru kaydırılıyorsa header görünsün
+            else if (lastScrollTop - currentScroll > showOnScrollUp) {
+                header.style.transform = "translateY(0)"; // Header tekrar açılıyor
+            }
+
+            lastScrollTop = currentScroll <= 0 ? 0 : currentScroll; // Negatif değerleri önle
+        });
+
+        // Tema değiştirme fonksiyonu
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+
+        themeToggle.addEventListener('click', function () {
+            // Koyu ve açık tema arasında geçiş
+            body.classList.toggle('dark-theme');
+
+            // Buton metnini değiştir
+            if (body.classList.contains('dark-theme')) {
+                themeToggle.textContent = "Açık Tema";
+            } else {
+                themeToggle.textContent = "Koyu Tema";
+            }
+        });
+    </script>
+
+</body>
+</html>
