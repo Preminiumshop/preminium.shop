@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Firebase Config
     const firebaseConfig = {
         apiKey: "YOUR_API_KEY",
         authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
@@ -10,7 +9,6 @@ document.addEventListener('DOMContentLoaded', () => {
         appId: "YOUR_APP_ID",
     };
 
-    // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
     const database = firebase.database();
 
@@ -21,7 +19,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const messageInput = document.getElementById('message');
     const grid = document.getElementById('grid');
 
-    // Load messages from Firebase
     function loadMessages() {
         database.ref('messages').on('value', (snapshot) => {
             grid.innerHTML = '';
@@ -33,12 +30,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Add message to Firebase
     function saveMessage(nickname, message) {
         database.ref('messages').push({ nickname, message });
     }
 
-    // Add message to the grid
     function addMessageToGrid(nickname, message) {
         const box = document.createElement('div');
         box.className = 'box';
@@ -46,19 +41,17 @@ document.addEventListener('DOMContentLoaded', () => {
         grid.appendChild(box);
     }
 
-    // Open modal
     addButton.addEventListener('click', () => {
+        console.log('Add Button Clicked!'); // Test için
         modal.classList.add('active');
     });
 
-    // Close modal by clicking outside
     modal.addEventListener('click', (e) => {
         if (e.target === modal) {
             modal.classList.remove('active');
         }
     });
 
-    // Submit message
     submitButton.addEventListener('click', () => {
         const nickname = nicknameInput.value.trim();
         const message = messageInput.value.trim();
@@ -78,6 +71,5 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Initialize
     loadMessages();
 });
