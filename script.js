@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Load messages from Firebase
     function loadMessages() {
         database.ref('messages').on('value', (snapshot) => {
-            grid.innerHTML = '';
+            grid.innerHTML = ''; // Clear existing messages
             const messages = snapshot.val();
             if (messages) {
                 Object.values(messages).forEach(({ nickname, message }) => {
