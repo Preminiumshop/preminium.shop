@@ -11,13 +11,11 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
+    const app = firebase.initializeApp(firebaseConfig);
     const database = firebase.database();
 
     // DOM Elements
-    const addButton = document.getElementById('addButton');
-    const modal = document.getElementById('modal');
-    const submitButton = document.getElementById('submit');
+    const messageForm = document.getElementById('messageForm');
     const nicknameInput = document.getElementById('nickname');
     const messageInput = document.getElementById('message');
     const grid = document.getElementById('grid');
@@ -27,16 +25,20 @@ document.addEventListener('DOMContentLoaded', () => {
         database.ref('messages').on('value', (snapshot) => {
             grid.innerHTML = '';
             const messages = snapshot.val();
-            for (const id in messages) {
-                const { nickname, message } = messages[id];
-                addMessageToGrid(nickname, message);
+            if (messages) {
+                Object.values(messages).forEach(({ nickname, message }) => {
+                    addMessageToGrid(nickname, message);
+                });
             }
         });
     }
 
     // Save message to Firebase
     function saveMessage(nickname, message) {
-        database.ref('messages').push({ nickname, message });
+        const newMessageKey = database.ref().child('messages').push().key;
+        const updates = {};
+        updates[`/messages/${newMessageKey}`] = { nickname, message };
+        return database.ref().update(updates);
     }
 
     // Add message to grid
@@ -47,20 +49,10 @@ document.addEventListener('DOMContentLoaded', () => {
         grid.appendChild(box);
     }
 
-    // Open Modal
-    addButton.addEventListener('click', () => {
-        modal.classList.add('active');
-    });
+    // Form submission
+    messageForm.addEventListener('submit', (e) => {
+        e.preventDefault();
 
-    // Close Modal when clicking outside
-    modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
-            modal.classList.remove('active');
-        }
-    });
-
-    // Submit Message
-    submitButton.addEventListener('click', () => {
         const nickname = nicknameInput.value.trim();
         const message = messageInput.value.trim();
 
@@ -70,10 +62,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (nickname && message) {
-            saveMessage(nickname, message);
-            nicknameInput.value = '';
-            messageInput.value = '';
-            modal.classList.remove('active');
+            saveMessage(nickname, message)
+                .then(() => {
+                    nicknameInput.value = '';
+                    messageInput.value = '';
+                })
+                .catch((error) => {
+                    console.error('Error saving message:', error);
+                });
         } else {
             alert('Please fill in both fields!');
         }
