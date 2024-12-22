@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anonymous Posting Site</title>
+    <title>Anonymous Board</title>
     <link rel="stylesheet" href="style.css">
-    <!-- Firebase CDN -->
     <script src="https://www.gstatic.com/firebasejs/9.16.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.16.0/firebase-database.js"></script>
     <script defer src="script.js"></script>
@@ -16,17 +15,12 @@
     </header>
 
     <main>
+        <form id="messageForm" class="form">
+            <input type="text" id="nickname" placeholder="Your nickname (max 10 chars)" maxlength="10" required />
+            <textarea id="message" placeholder="Write your message here..." rows="4" required></textarea>
+            <button type="submit">Post</button>
+        </form>
         <div class="grid" id="grid"></div>
-        <button class="add-button" id="addButton">+</button>
     </main>
-
-    <div class="modal" id="modal">
-        <div class="modal-content">
-            <h2>Add Your Message</h2>
-            <input type="text" id="nickname" placeholder="Your nickname (max 10 characters)" maxlength="10" />
-            <textarea id="message" rows="4" placeholder="Your message"></textarea>
-            <button id="submit">Submit</button>
-        </div>
-    </div>
 </body>
 </html>
